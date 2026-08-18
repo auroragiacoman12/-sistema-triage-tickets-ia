@@ -119,7 +119,9 @@ Disparador: polling cada minuto sobre la bandeja de entrada, con filtro de búsq
 
 ### 2.3 Search records (Airtable → n8n)
 
+Este paso ocurre dentro de la misma ejecución disparada por el Gmail Trigger (no existe un Schedule Trigger independiente): inmediatamente después de crear el registro, el flujo busca ese mismo registro en Airtable para continuar con la clasificación. 
 Filtro por fórmula: `{estado} = 'Pendiente'`.
+
 
 ```json
 {
