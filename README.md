@@ -16,7 +16,7 @@ Un ticket llega por correo → un modelo de IA económico (Claude Haiku) lo clas
 ```
 Gmail Trigger → Create record (Airtable)
       ↓
-Schedule + Search records (detecta pendientes)
+Search records (Airtable, dentro de la misma ejecución)
       ↓
 Claude Haiku (clasifica) → Update record
       ↓
