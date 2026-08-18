@@ -49,7 +49,7 @@ Ver el diagrama completo en [`diagrama_arquitectura.pdf`](./diagrama_arquitectur
 |---|---|
 | Dashboard de control (KPIs y tasa de errores) | [Ver en Airtable Interfaces](https://airtable.com/appSuLAfznvdFKpCI/pagpJ5bBGHbiUlj49) |
 | Base de datos (modo lectura) | [Ver base completa](https://airtable.com/appSuLAfznvdFKpCI/shr7lmiFop6sArm9H) |
-| Video demo (3 min) | *(pendiente)* |
+|| Video demo (3 min) | [Ver video](https://drive.google.com/file/d/1y8MP31pShHlsL4emzG9xyZjzW8mW_bz3/view?usp=sharing) |
 
 ## ⚙️ Componentes técnicos
 
