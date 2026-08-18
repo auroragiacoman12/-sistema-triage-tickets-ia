@@ -1,0 +1,1216 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appSuLAfznvdFKpCI",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTKlO8I3GHZNxVb",
+          "mode": "id"
+        },
+        "filterByFormula": "{estado} = 'Pendiente'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        16
+      ],
+      "id": "0db610a8-77d1-4d46-af83-9711f643582e",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "iWdGXpmjDjNN6i44",
+          "name": "Airtable account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "q": "from:aurora.giacoman@udem.edu -subject:\"Re:\"",
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -176,
+        16
+      ],
+      "id": "e5217e98-ed13-4de4-bc9e-eb05d7a49896",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "b3LTpMVL9nNxl7Pj",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appSuLAfznvdFKpCI",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTKlO8I3GHZNxVb",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Asunto": "={{ $json.Subject }}",
+            "Mensaje": "={{ $json.snippet }}",
+            "estado": "Pendiente"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Modificacion",
+              "displayName": "Modificacion",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Procesado por IA",
+                  "value": "Procesado por IA"
+                },
+                {
+                  "name": "Aprobado por Humano",
+                  "value": "Aprobado por Humano"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Clasificación IA",
+              "displayName": "Clasificación IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resumen (Clasificación IA)",
+              "displayName": "Resumen (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Titular (Clasificación IA)",
+              "displayName": "Titular (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        16
+      ],
+      "id": "c1073b52-3c70-4d10-a077-597b17eea5d6",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "iWdGXpmjDjNN6i44",
+          "name": "Airtable account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "claude-haiku-4-5-20251001",
+          "mode": "list",
+          "cachedResultName": "claude-haiku-4-5-20251001"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Clasifica el siguiente ticket de soporte en una categoría (Técnico, Administrativo, Académico, Otro) y asigna una urgencia (Alta, Media, Baja). Responde SOLO con este formato JSON, sin texto adicional: {\"categoria\": \"...\", \"urgencia\": \"...\"}\n\nAsunto: {{ $json.fields.Asunto }}\nMensaje: {{ $json.fields.Mensaje }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.anthropic",
+      "typeVersion": 1,
+      "position": [
+        448,
+        48
+      ],
+      "id": "5be862c9-961f-45a0-9d55-6eeb2f44db84",
+      "name": "Message a model",
+      "retryOnFail": true,
+      "credentials": {
+        "anthropicApi": {
+          "id": "hD3NtJ380humhEhG",
+          "name": "Anthropic account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Toma el texto crudo que regresó Claude\nconst rawText = $input.item.json.content[0].text;\n\n// Quita los ```json y ``` que envuelven la respuesta\nconst cleanText = rawText\n  .replace(/```json\\n?/g, '')\n  .replace(/```/g, '')\n  .trim();\n\n// Convierte el texto limpio a un objeto JSON real\nconst parsed = JSON.parse(cleanText);\n\n// Regresa el objeto parseado, junto con los datos originales del ticket\nreturn {\n  json: {\n    ...$('Search records').item.json,\n    categoria: parsed.categoria,\n    urgencia: parsed.urgencia\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        32
+      ],
+      "id": "0d4af4b5-379b-4ab6-bd84-9a9d1284b144",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appSuLAfznvdFKpCI",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTKlO8I3GHZNxVb",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Clasificación IA": "=Categoría: {{ $json.categoria }} | Urgencia: {{ $json.urgencia }}",
+            "estado": "Procesado por IA"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Modificacion",
+              "displayName": "Modificacion",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Procesado por IA",
+                  "value": "Procesado por IA"
+                },
+                {
+                  "name": "Aprobado por Humano",
+                  "value": "Aprobado por Humano"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Clasificación IA",
+              "displayName": "Clasificación IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resumen (Clasificación IA)",
+              "displayName": "Resumen (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Titular (Clasificación IA)",
+              "displayName": "Titular (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        32
+      ],
+      "id": "428b7ed3-142d-4e3b-9338-8db2f88c1992",
+      "name": "Update record",
+      "retryOnFail": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "iWdGXpmjDjNN6i44",
+          "name": "Airtable account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "list",
+          "cachedResultName": "claude-sonnet-4-5-20250929"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Eres un asistente de soporte de una institución educativa. Redacta una respuesta profesional, breve y cordial (máximo 100 palabras) para el siguiente ticket. La respuesta debe estar lista para enviar directamente al remitente por correo.\n\nCategoría: {{ $('Code in JavaScript').item.json.categoria }}\nUrgencia: {{ $('Code in JavaScript').item.json.urgencia }}\nAsunto: {{ $json.fields.Asunto }}\nMensaje del cliente: {{ $json.fields.Mensaje }}\n\nResponde SOLO con el texto del correo, sin encabezados ni explicaciones adicionales."
+            }
+          ]
+        },
+        "options": {
+          "maxTokens": 200
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.anthropic",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        32
+      ],
+      "id": "8feb0b5b-abe0-4726-802d-78e223efb766",
+      "name": "Message a model1",
+      "retryOnFail": true,
+      "credentials": {
+        "anthropicApi": {
+          "id": "hD3NtJ380humhEhG",
+          "name": "Anthropic account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "aurora.giacoman12@gmail.com",
+        "subject": "=Aprobación requerida: {{ $('Update record').item.json.fields.Asunto }}",
+        "message": "=Categoría: {{ $('Code in JavaScript').item.json.categoria }}\nUrgencia: {{ $('Code in JavaScript').item.json.urgencia }}\n\nMensaje del cliente:\n{{ $('Update record').item.json.fields.Mensaje }}\n\nRespuesta sugerida por IA:\n{{ $json.content[0].text }}\n\n¿Apruebas el envío de esta respuesta al cliente?",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Aprobar",
+            "disapproveLabel": "Desaprobar"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        32
+      ],
+      "id": "c7eeb983-c5e4-42a9-a026-4057613dc4d8",
+      "name": "Send message and wait for response",
+      "webhookId": "c4b47d7f-08a5-41eb-92b7-e1df984e23ae",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "b3LTpMVL9nNxl7Pj",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f8f7e6b6-5f61-4069-920c-ee8daff7d908",
+              "leftValue": "={{ $json.data.approved === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1536,
+        32
+      ],
+      "id": "99ff7cbf-550b-4e9c-af77-6fe424e9ef16",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appSuLAfznvdFKpCI",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTKlO8I3GHZNxVb",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Code in JavaScript').item.json.id }}",
+            "estado": "Aprobado por Humano"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Modificacion",
+              "displayName": "Modificacion",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Procesado por IA",
+                  "value": "Procesado por IA"
+                },
+                {
+                  "name": "Aprobado por Humano",
+                  "value": "Aprobado por Humano"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Clasificación IA",
+              "displayName": "Clasificación IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resumen (Clasificación IA)",
+              "displayName": "Resumen (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Titular (Clasificación IA)",
+              "displayName": "Titular (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1760,
+        -192
+      ],
+      "id": "53511d21-8bef-4a3f-8048-898b00a9b5d3",
+      "name": "Update record1",
+      "retryOnFail": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "iWdGXpmjDjNN6i44",
+          "name": "Airtable account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "aurora.giacoman@udem.edu",
+        "subject": "=Re: {{ $('Update record').item.json.fields.Asunto }}",
+        "message": "={{ $('Message a model1').item.json.content[0].text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        -208
+      ],
+      "id": "e5a7a4ce-d6e4-4f4a-8a84-612f6d1ef0de",
+      "name": "Send a message",
+      "webhookId": "194ecbf5-0095-42cb-ba13-f71dac41f5a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "b3LTpMVL9nNxl7Pj",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appSuLAfznvdFKpCI",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTKlO8I3GHZNxVb",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Code in JavaScript').item.json.id }}",
+            "estado": "Rechazado por Humano"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Modificacion",
+              "displayName": "Modificacion",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Procesado por IA",
+                  "value": "Procesado por IA"
+                },
+                {
+                  "name": "Aprobado por Humano",
+                  "value": "Aprobado por Humano"
+                },
+                {
+                  "name": "Rechazado por Humano",
+                  "value": "Rechazado por Humano"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Clasificación IA",
+              "displayName": "Clasificación IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resumen (Clasificación IA)",
+              "displayName": "Resumen (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Titular (Clasificación IA)",
+              "displayName": "Titular (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1760,
+        112
+      ],
+      "id": "5701d8d1-6d98-4ade-b3d5-2794c7f8ae5f",
+      "name": "Update record2",
+      "retryOnFail": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "iWdGXpmjDjNN6i44",
+          "name": "Airtable account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "aurora.giacoman@udem.edu",
+        "subject": "=Ticket requiere revisión manual: {{ $('Update record').item.json.fields.Asunto }}",
+        "message": "= El siguiente ticket fue marcado como \"Rechazado por Humano\" y requiere atención manual, ya que la respuesta sugerida por IA no fue aprobada.       Categoría: {{ $('Code in JavaScript').item.json.categoria }}      Urgencia: {{ $('Code in JavaScript').item.json.urgencia }}      Asunto: {{ $('Update record').item.json.fields.Asunto }}      Mensaje del cliente: {{ $('Update record').item.json.fields.Mensaje }}       Respuesta que fue rechazada:      {{ $('Message a model1').item.json.content[0].text }}       Por favor da seguimiento manual a este caso.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2032,
+        96
+      ],
+      "id": "a573a806-d4a5-4fdc-8ca7-486987d8eb1e",
+      "name": "Send a message1",
+      "webhookId": "79e93ddb-3e6d-4c66-bdd4-bde0b1357d99",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "b3LTpMVL9nNxl7Pj",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appSuLAfznvdFKpCI",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTKlO8I3GHZNxVb",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Code in JavaScript').item.json.id || $('Search records').item.json.id }}",
+            "estado": "Error"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Modificacion",
+              "displayName": "Modificacion",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Procesado por IA",
+                  "value": "Procesado por IA"
+                },
+                {
+                  "name": "Aprobado por Humano",
+                  "value": "Aprobado por Humano"
+                },
+                {
+                  "name": "Rechazado por Humano",
+                  "value": "Rechazado por Humano"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Clasificación IA",
+              "displayName": "Clasificación IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Creación",
+              "displayName": "Fecha de Creación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resumen (Clasificación IA)",
+              "displayName": "Resumen (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Titular (Clasificación IA)",
+              "displayName": "Titular (Clasificación IA)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        720
+      ],
+      "id": "94b0b5c1-ec9c-481e-b08f-905bdf20801a",
+      "name": "LogError",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "iWdGXpmjDjNN6i44",
+          "name": "Airtable account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LogError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LogError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LogError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update record1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update record2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LogError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record2": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LogError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "132274ce7e0528abe9c386c0675bb2c005d38fb11e65bec377d0aee5ab49fd94"
+  }
+}
