@@ -62,7 +62,7 @@ A continuación se documenta la forma real de los datos que viajan entre cada no
 
 ### 2.1 Gmail Trigger → n8n (entrada del ticket)
 
-Disparador: polling cada minuto sobre la bandeja de entrada, con filtro de búsqueda `-from:[cuenta propia] -subject:"Re:"` para evitar que el sistema reprocese sus propias respuestas (prevención de bucles infinitos).
+Disparador: polling cada minuto sobre la bandeja de entrada, con filtro de búsqueda `from:aurora.giacoman@udem.edu -subject:"Re:"` para evitar que el sistema reprocese sus propias respuestas (prevención de bucles infinitos). Para esta entrega, el filtro se acotó a un remitente específico con fines de control durante las pruebas; el detalle de esta decisión y su implicación en producción se documenta en `seguridad_resiliencia.md`.
 
 ```json
 {
