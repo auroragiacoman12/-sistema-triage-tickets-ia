@@ -79,3 +79,4 @@ Como mejora futura, se recomienda agregar un paso de filtrado previo (por ejempl
 | Bucle infinito por reprocesar respuestas propias | Filtro de exclusión sobre la cuenta de soporte | Implementado |
 | Correos no relacionados con soporte (spam, publicidad) consumiendo el flujo | No implementado en esta entrega | Pendiente (mejora futura) |
 | Filtro de entrada acotado a un solo remitente (limitación de la demo) | Documentado como decisión de alcance para la demo | Pendiente para producción real |
+| Reprocesamiento en bucle si el correo permanece sin leer entre polls | Nodo de Gmail para marcar el mensaje como leído inmediatamente después de capturarlo | Implementado |
