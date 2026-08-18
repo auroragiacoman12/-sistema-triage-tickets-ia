@@ -53,7 +53,7 @@ Ver el diagrama completo en [`diagrama_arquitectura.pdf`](./diagrama_arquitectur
 
 ## ⚙️ Componentes técnicos
 
-- **Trigger inteligente:** Gmail Trigger con polling cada minuto y filtro anti-bucle (`-from:[cuenta] -subject:"Re:"`) para evitar reprocesar las propias respuestas del sistema.
+- **Trigger inteligente:** Gmail Trigger con polling cada minuto y filtro anti-bucle (`from:aurora.giacoman@udem.edu -subject:"Re:"`) para evitar reprocesar las propias respuestas del sistema. *Nota: para esta entrega, el filtro se acotó a un remitente específico como medida de control durante las pruebas y la grabación del video; en producción se ampliaría para aceptar cualquier remitente externo (ver `seguridad_resiliencia.md`).*
 - **Motor de IA de dos niveles:** Claude Haiku 4.5 para clasificación (tarea simple, bajo costo) y Claude Sonnet 4.5 para redacción de respuestas (mayor calidad de lenguaje).
 - **Resiliencia:** reintentos automáticos (3x) + registro centralizado de errores (`LogError`) en los nodos críticos.
 - **Human-in-the-Loop:** ninguna respuesta generada por IA se envía al cliente sin aprobación humana explícita.
